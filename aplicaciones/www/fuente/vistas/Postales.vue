@@ -10,7 +10,7 @@
     <ol v-else class="lista-postales">
       <li v-for="p in postales" :key="p.id">
         <time :datetime="p.creado">{{ formatoFecha(p.creado) }}</time>
-        <p class="texto">{{ p.texto }}</p>
+        <p class="texto">{{ p.text }}</p>
       </li>
     </ol>
   </section>
@@ -18,10 +18,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { apiUrl } from '@/utilidades/constantes';
 
 interface Postal {
   id: number;
-  texto: string;
+  text: string;
   creado: string;
 }
 
@@ -41,14 +42,15 @@ function formatoFecha(iso: string) {
 async function cargarPostales() {
   loading.value = true;
   try {
-    const res = await fetch('https://deseos-tally.enflujo.com/postales');
+    const res = await fetch(apiUrl('/postales'));
     if (!res.ok) throw new Error(res.statusText);
     const data = await res.json();
     // server returns { items, count } — accept either that shape or a raw array
     const items = Array.isArray(data) ? data : data.items || [];
+    console.log('Cargadas postales', items);
     postales.value = items.map((it: Partial<Postal>) => ({
       id: it.id as number,
-      texto: it.texto ?? '',
+      text: it.text ?? '',
       creado:
         it.creado ??
         (typeof (it as unknown as { created?: string }).created === 'string'

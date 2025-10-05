@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import CampoTexto from '@/componentes/CampoTexto.vue';
+import { apiUrl } from '@/utilidades/constantes';
 
 const texto = ref('');
 const enviando = ref(false);
@@ -11,7 +12,7 @@ async function enviarTexto() {
   if (enviando.value) return;
   enviando.value = true;
   try {
-    const res = await fetch('https://deseos-tally.enflujo.com/postal', {
+    const res = await fetch(apiUrl('/postal'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: texto.value }),

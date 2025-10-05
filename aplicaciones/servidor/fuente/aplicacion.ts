@@ -33,9 +33,12 @@ await app.register(fastifyEnv, {
   dotenv: true,
 });
 
-// --- CORS: deja que el plugin maneje el preflight OPTIONS ---
+// --- CORS: en desarrollo permitimos cualquier origen (origin: true),
+// en producción mantenemos el dominio público.
+const esDesarrollo = (process.env.NODE_ENV || process.env.AMBIENTE) === 'desarrollo';
+const origenes: boolean | string[] = esDesarrollo ? true : ['https://deseos.enflujo.com'];
 await app.register(cors, {
-  origin: ['https://deseos.enflujo.com'],
+  origin: origenes,
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -44,10 +47,11 @@ await app.register(cors, {
 });
 
 // Helper para asegurar CORS también en errores/404 (no crea rutas nuevas)
-import type { FastifyReply } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-function setCors(reply: FastifyReply) {
-  reply.header('Access-Control-Allow-Origin', 'https://deseos.enflujo.com');
+function setCors(req: FastifyRequest, reply: FastifyReply) {
+  const origen = esDesarrollo ? (req.headers.origin as string) || '*' : 'https://deseos.enflujo.com';
+  reply.header('Access-Control-Allow-Origin', origen);
   reply.header('Access-Control-Allow-Credentials', 'true');
   reply.header('Vary', 'Origin');
 }
@@ -56,13 +60,13 @@ function setCors(reply: FastifyReply) {
 
 // 404 y errores con CORS
 app.setNotFoundHandler((req, reply) => {
-  setCors(reply);
+  setCors(req, reply);
   reply.code(404).send({ error: 'Not Found' });
 });
 
 app.setErrorHandler((err, req, reply) => {
   req.log.error(err);
-  setCors(reply);
+  setCors(req, reply);
   reply.code(err.statusCode || 500).send({ error: 'Internal Error' });
 });
 
