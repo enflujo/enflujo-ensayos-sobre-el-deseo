@@ -30,21 +30,31 @@ const app = fastify({ logger: true });
 await app.register(fastifyEnv, {
   confKey: 'config',
   schema,
+  dotenv: true,
 });
 
 await app.register(cors, {
   origin: ['https://deseos.enflujo.com'],
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true, // solo si usas cookies/Authorization
+  credentials: true,
   maxAge: 600,
+  preflight: true,
 });
 
 function setCors(reply: any) {
-  // si quieres permitir solo un origen:
   reply.header('Access-Control-Allow-Origin', 'https://deseos.enflujo.com');
-  reply.header('Vary', 'Origin'); // por si cacheas
+  reply.header('Access-Control-Allow-Credentials', 'true');
+  reply.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+  reply.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  reply.header('Vary', 'Origin');
 }
+
+// Responder cualquier OPTIONS (por si el plugin no intercepta algún edge)
+app.options('/*', async (req, reply) => {
+  setCors(reply);
+  reply.code(204).send();
+});
 
 app.setNotFoundHandler((req, reply) => {
   setCors(reply);
