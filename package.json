@@ -19,7 +19,8 @@
     "lint": "prettier --check .",
     "lint:fix": "prettier --write --list-different .",
     "dep:peers": "yarn explain peer-requirements",
-    "lint:es": "eslint . --ext .ts,.tsx,.vue"
+    "lint:es": "eslint . --ext .ts,.tsx,.vue",
+    "prender": "yarn armar && pm2 start ecosystem.config.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.37.0",
