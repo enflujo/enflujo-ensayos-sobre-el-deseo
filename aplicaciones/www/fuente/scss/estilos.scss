@@ -1,0 +1,52 @@
+@use './normalizar';
+@import url('https://use.typekit.net/xuc2qfg.css');
+
+:root {
+  --colorFuente: #252424;
+  --fuente2: 'ltc-remington-typewriter-pro', sans-serif;
+  --colorAzul: #162b4a;
+  --colorRojo: #ac1e0a;
+}
+
+body {
+  font-family: 'futura-pt', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Global button style to ensure consistent appearance across views */
+.botonEnviar {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1.5px dotted var(--colorRojo);
+  background: none;
+  color: var(--colorAzul);
+  cursor: pointer;
+  position: relative;
+}
+
+.botonEnviar::before {
+  content: '';
+  border: 1.5px dotted var(--colorRojo);
+  padding: 1px;
+  width: 99.5%;
+  display: block;
+  height: 80%;
+  position: absolute;
+  border-radius: 6px;
+  top: 10%;
+  left: 0.25%;
+}
+
+.botonEnviar:hover {
+  background: var(--colorRojo);
+  color: white;
+}
+
+.botonEnviar[disabled] {
+  opacity: 0.25;
+  cursor: not-allowed;
+  filter: grayscale(30%) brightness(0.96);
+}

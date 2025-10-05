@@ -1,0 +1,37 @@
+{
+  "name": "enflujo-plantilla-vue-servidor",
+  "packageManager": "yarn@4.10.3",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "aplicaciones/*"
+  ],
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "des": "yarn workspaces foreach -A -p -i --topological-dev --include servidor --include www run des",
+    "armar": "yarn workspaces foreach -A --topological --include servidor --include www run armar",
+    "previsualizar": "yarn workspace www previsualizar",
+    "revisar": "yarn workspace www check",
+    "servidor": "yarn workspace servidor des",
+    "lint": "prettier --check .",
+    "lint:fix": "prettier --write --list-different .",
+    "dep:peers": "yarn explain peer-requirements",
+    "lint:es": "eslint . --ext .ts,.tsx,.vue"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.37.0",
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
+    "eslint": "^9.37.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.5.0",
+    "globals": "^16.4.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.45.0",
+    "vue-eslint-parser": "^10.2.0"
+  }
+}

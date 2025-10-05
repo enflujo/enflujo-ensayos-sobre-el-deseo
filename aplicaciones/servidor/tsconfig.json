@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
+    "rootDir": "./fuente",
+    "outDir": "./publico",
+
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./fuente/*"],
+      "@/tipos/*": ["../../tipos/*"]
+    },
+    "verbatimModuleSyntax": true
+  },
+  "include": ["./fuente/**/*"],
+  "exclude": ["node_modules"]
+}

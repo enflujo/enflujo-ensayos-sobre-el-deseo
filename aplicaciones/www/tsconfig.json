@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "tsBuildInfoFile": "./.tsbuildinfo",
+
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+
+    /* Transpilador (Vite) */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "preserve",
+    "verbatimModuleSyntax": true,
+
+    /* Estilos/estricto */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Alias */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./fuente/*"],
+      "@/tipos/*": ["../../tipos/*"]
+    },
+
+    /* Tipos de Vite en el editor */
+    "types": ["vite/client"]
+  },
+  "include": ["fuente/**/*.ts", "fuente/**/*.tsx", "fuente/**/*.vue"]
+}

@@ -1,0 +1,53 @@
+# salida
+publico/
+
+# dependencias
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# variables de entorno
+.env
+.env.production
+
+# archivos específicos de macOS
+.DS_Store
+
+# Ver documentación de Yarn moderno (> v2): https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+.env
+.env.local
+
+# -------------------------
+# Archivos de bases de datos locales
+# Ignorar archivos de bases de datos que se generan en tiempo de ejecución
+# (por ejemplo SQLite). No ignores archivos de migraciones o dumps que
+# quieras versionar intencionadamente; esos deben añadirse al repo.
+*.db
+*.sqlite
+*.sqlite3
+
+# Archivos temporales y de WAL/SHM que crea SQLite
+*.db-shm
+*.db-wal
+*.sqlite-shm
+*.sqlite-wal
+*.db-journal
+
+# Copias de seguridad / dumps locales (opcional: quítalos si quieres
+# versionar dumps .sql manualmente)
+*.dump
+*.bak
+*.sql.gz
+*.sql.zip
