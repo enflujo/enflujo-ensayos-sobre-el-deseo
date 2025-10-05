@@ -51,3 +51,7 @@ pnpm-debug.log*
 *.bak
 *.sql.gz
 *.sql.zip
+
+*.tsbuildinfo
+**/*.tsbuildinfo
+aplicaciones/**/.tsbuildinfo
