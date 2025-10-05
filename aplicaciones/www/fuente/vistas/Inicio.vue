@@ -31,7 +31,7 @@ async function enviarTexto() {
 <template>
   <div class="col2">
     <CampoTexto v-model="texto" />
-    <span class="nota">Su mensaje es anónimo.</span>
+    <span class="nota">Su respuesta es anónima.</span>
     <button class="botonEnviar" :disabled="enviando || texto.length < 3" @click="enviarTexto">
       {{ enviando ? 'Enviando...' : 'Enviar' }}
     </button>
