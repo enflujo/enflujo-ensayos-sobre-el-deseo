@@ -34,8 +34,7 @@ await app.register(fastifyEnv, {
 
 await app.register(cors, { origin: true });
 
-const esProduccion = app.config.AMBIENTE === 'produccion';
-const prefijo = esProduccion ? '/tally' : '/';
+const prefijo = '/';
 // ---------- sqlite setup ----------
 // create/open database in ./datos (ensure directory exists)
 const __filename = fileURLToPath(import.meta.url);
