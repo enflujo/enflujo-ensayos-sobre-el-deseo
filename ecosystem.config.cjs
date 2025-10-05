@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'deseos-tally',
-      script: './aplicaciones/servidor/publico/aplicacion.js',
+      script: './publico/aplicacion.js',
       // Ejecutar desde el directorio del servidor para que los .env locales
       // y rutas relativas funcionen como se espera.
       cwd: './aplicaciones/servidor',
