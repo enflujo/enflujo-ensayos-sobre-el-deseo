@@ -27,53 +27,50 @@ declare module 'fastify' {
 
 const app = fastify({ logger: true });
 
+// --- ENV (.env si existe) ---
 await app.register(fastifyEnv, {
   confKey: 'config',
   schema,
   dotenv: true,
 });
 
+// --- CORS: deja que el plugin maneje el preflight OPTIONS ---
 await app.register(cors, {
   origin: ['https://deseos.enflujo.com'],
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
   maxAge: 600,
-  preflight: true,
+  preflight: true, // el plugin responde OPTIONS automáticamente
 });
 
+// Helper para asegurar CORS también en errores/404 (no crea rutas nuevas)
 function setCors(reply: any) {
   reply.header('Access-Control-Allow-Origin', 'https://deseos.enflujo.com');
   reply.header('Access-Control-Allow-Credentials', 'true');
-  reply.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-  reply.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   reply.header('Vary', 'Origin');
 }
 
-// Responder cualquier OPTIONS (por si el plugin no intercepta algún edge)
-app.options('/*', async (req, reply) => {
-  setCors(reply);
-  reply.code(204).send();
-});
+// ❗️NO declarar app.options('/*', ...) (lo hace el plugin)
 
+// 404 y errores con CORS
 app.setNotFoundHandler((req, reply) => {
   setCors(reply);
   reply.code(404).send({ error: 'Not Found' });
 });
 
 app.setErrorHandler((err, req, reply) => {
-  app.log.error(err);
+  req.log.error(err);
   setCors(reply);
   reply.code(err.statusCode || 500).send({ error: 'Internal Error' });
 });
 
-const prefijo = '/';
-// ---------- sqlite setup ----------
-// create/open database in ./datos (ensure directory exists)
+// ---------- SQLite setup ----------
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const datosDir = path.join(__dirname, '..', 'datos');
 fs.mkdirSync(datosDir, { recursive: true });
+
 const dbPath = path.join(datosDir, 'postales.db');
 const db = new Database(dbPath);
 db.pragma('journal_mode = WAL');
@@ -85,7 +82,8 @@ db.exec(`
   )
 `);
 
-app.post(`${prefijo}postal`, async (request, reply) => {
+// ---------- Rutas ----------
+app.post('/postal', async (request, reply) => {
   const { text } = request.body as { text: string };
   app.log.info(`Texto recibido: ${text}`);
   try {
@@ -99,7 +97,7 @@ app.post(`${prefijo}postal`, async (request, reply) => {
 });
 
 // GET list of postales (optional query: ?limit=50&offset=0)
-app.get(`${prefijo}postales`, async (request, reply) => {
+app.get('/postales', async (request, reply) => {
   const q = request.query as Record<string, string | undefined>;
   const rawLimit = parseInt(q.limit || '50', 10);
   const rawOffset = parseInt(q.offset || '0', 10);
@@ -116,5 +114,6 @@ app.get(`${prefijo}postales`, async (request, reply) => {
   }
 });
 
+// ---------- Arranque ----------
 const direccion = await app.listen({ port: app.config.PUERTO, host: '0.0.0.0' });
 app.log.info(`Servidor en ${direccion}`);
