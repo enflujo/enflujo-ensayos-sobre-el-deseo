@@ -1,4 +1,3 @@
-// fuente/aplicacion.ts
 import fastify from 'fastify';
 import fastifyEnv from '@fastify/env';
 import cors from '@fastify/cors';
@@ -45,7 +44,9 @@ await app.register(cors, {
 });
 
 // Helper para asegurar CORS también en errores/404 (no crea rutas nuevas)
-function setCors(reply: any) {
+import type { FastifyReply } from 'fastify';
+
+function setCors(reply: FastifyReply) {
   reply.header('Access-Control-Allow-Origin', 'https://deseos.enflujo.com');
   reply.header('Access-Control-Allow-Credentials', 'true');
   reply.header('Vary', 'Origin');

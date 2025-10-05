@@ -46,11 +46,15 @@ async function cargarPostales() {
     const data = await res.json();
     // server returns { items, count } — accept either that shape or a raw array
     const items = Array.isArray(data) ? data : data.items || [];
-    // normalize fields: server uses `text` while UI expects `texto`
-    postales.value = items.map((it: any) => ({
-      id: it.id,
-      texto: it.text ?? it.texto ?? '',
-      creado: it.creado ?? it.created ?? '',
+    postales.value = items.map((it: Partial<Postal>) => ({
+      id: it.id as number,
+      texto: it.texto ?? '',
+      creado:
+        it.creado ??
+        (typeof (it as unknown as { created?: string }).created === 'string'
+          ? (it as { created?: string }).created
+          : '') ??
+        '',
     }));
   } catch (e) {
     console.error('Error cargando postales', e);
