@@ -32,7 +32,30 @@ await app.register(fastifyEnv, {
   schema,
 });
 
-await app.register(cors, { origin: true });
+await app.register(cors, {
+  origin: ['https://deseos.enflujo.com'],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true, // solo si usas cookies/Authorization
+  maxAge: 600,
+});
+
+function setCors(reply: any) {
+  // si quieres permitir solo un origen:
+  reply.header('Access-Control-Allow-Origin', 'https://deseos.enflujo.com');
+  reply.header('Vary', 'Origin'); // por si cacheas
+}
+
+app.setNotFoundHandler((req, reply) => {
+  setCors(reply);
+  reply.code(404).send({ error: 'Not Found' });
+});
+
+app.setErrorHandler((err, req, reply) => {
+  app.log.error(err);
+  setCors(reply);
+  reply.code(err.statusCode || 500).send({ error: 'Internal Error' });
+});
 
 const prefijo = '/';
 // ---------- sqlite setup ----------
