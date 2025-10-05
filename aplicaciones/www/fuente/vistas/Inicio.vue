@@ -11,7 +11,7 @@ async function enviarTexto() {
   if (enviando.value) return;
   enviando.value = true;
   try {
-    const res = await fetch('http://localhost:8000/postal', {
+    const res = await fetch('https://deseos-tally.enflujo.com/postal', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: texto.value }),
