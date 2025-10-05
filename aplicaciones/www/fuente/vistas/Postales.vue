@@ -41,7 +41,7 @@ function formatoFecha(iso: string) {
 async function cargarPostales() {
   loading.value = true;
   try {
-    const res = await fetch('http://localhost:8000/postales');
+    const res = await fetch('https://deseos-tally.enflujo.com/postales');
     if (!res.ok) throw new Error(res.statusText);
     const data = await res.json();
     // server returns { items, count } — accept either that shape or a raw array
