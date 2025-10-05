@@ -8,7 +8,7 @@
     "aplicaciones/*"
   ],
   "engines": {
-    "node": ">=20.11"
+    "node": ">=20.19"
   },
   "scripts": {
     "des": "yarn workspaces foreach -A -p -i --topological-dev --include servidor --include www run des",
