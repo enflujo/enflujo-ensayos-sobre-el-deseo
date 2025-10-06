@@ -47,7 +47,7 @@ async function cargarPostales() {
     const data = await res.json();
     // server returns { items, count } — accept either that shape or a raw array
     const items = Array.isArray(data) ? data : data.items || [];
-    console.log('Cargadas postales', items);
+
     postales.value = items.map((it: Partial<Postal>) => ({
       id: it.id as number,
       text: it.text ?? '',
